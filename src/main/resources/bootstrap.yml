@@ -13,6 +13,26 @@ spring:
         refresh-enabled: true
         namespace: 50c24e71-65f9-4f49-b387-984387e376e7
         group: LLJ_GROUP
+    gateway:
+      discovery:
+        locator:
+          # 表示gateway开启服务注册和发现功能,
+          # 并且spring cloud gateway自动根据服务发现为每一个服务创建了一个router，这个router将以服务名开头的请求路径转发到对应的服务
+          enabled: false
+          #表示将请求路径的服务名配置改成小写  因为服务注册的时候，向注册中心注册时将服务名转成大写的了
+          lower-case-service-id: true
+      routes:
+        - id: link-nacos-server
+          uri: lb://link-nacos-server
+          predicates:
+            - Path=/app/link-nacos-prefix/**,
+          filters:
+            - StripPrefix=2  #将前缀去掉
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 1
+                key-resolver: "#{@ipKeyResolver}"
 
 management:
   endpoints:
