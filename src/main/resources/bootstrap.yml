@@ -25,7 +25,7 @@ spring:
         - id: link-nacos-server
           uri: lb://link-nacos-server
           predicates:
-            - Path=/app/link-nacos-prefix/**,
+            - Path=/app/link-nacos-prefix/**
           filters:
             - StripPrefix=2  #将前缀去掉
             - name: RequestRateLimiter
