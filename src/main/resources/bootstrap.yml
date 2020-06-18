@@ -27,6 +27,9 @@ spring:
           predicates:
             - Path=/app/link-nacos-prefix/**
           filters:
+            # 关键在下面一句，值为true则开启认证，false则不开启
+            # 这种配置方式和spring cloud gateway内置的GatewayFilterFactory一致
+            #- Authorize=true
             - StripPrefix=2  #将前缀去掉
             - name: RequestRateLimiter
               args:
