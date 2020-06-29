@@ -1,10 +1,10 @@
-package com.cloud.personal.gatewayserver.filter.gatewayfilter.way1;
+package com.cloud.personal.gatewayserver.filter.globalfilter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
  * 传递token和uid进行验证
 */
 @Slf4j
-public class AuthorizeGatewayFilter implements GatewayFilter, Ordered {
+public class AuthorizeGlobalFilter implements GlobalFilter, Ordered {
 
     private static final String AUTHORIZE_TOKEN = "token";
     private static final String AUTHORIZE_UID = "uid";
@@ -29,6 +29,7 @@ public class AuthorizeGatewayFilter implements GatewayFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        log.info("--------------- 全局过滤器执行 ---------------");
         ServerHttpRequest request = exchange.getRequest();
         HttpHeaders headers = request.getHeaders();
         String token = headers.getFirst(AUTHORIZE_TOKEN);
